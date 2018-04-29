@@ -1,0 +1,4 @@
+arrow
+python-dotenv
+requests
+ujson
