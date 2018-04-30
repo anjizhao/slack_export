@@ -12,6 +12,8 @@ load_dotenv(find_dotenv())
 SLACK_TOKEN = os.getenv('SLACK_TOKEN')
 CHANNEL_IDS_STRING = os.getenv('CHANNEL_IDS')
 CHANNEL_IDS = CHANNEL_IDS_STRING.split(',')
+DIRECTORY_NAME = os.getenv('DIRECTORY_NAME') or '.'
+
 
 HISTORY_URL = 'https://slack.com/api/conversations.history'
 CHANNEL_INFO_URL = 'https://slack.com/api/conversations.info'
@@ -31,7 +33,8 @@ for channel_id in CHANNEL_IDS:
         'channel': channel_id,
         'limit': 200,
     }
-    filename = 'conversation_%s_%d.txt' % (channel_id, arrow.utcnow().timestamp)
+    filename = '%s/conversation_%s_%d.txt' % (
+        DIRECTORY_NAME, channel_id, arrow.utcnow().timestamp)
     with open(filename, 'w') as openfile:
         while cursor:
             response = requests.get(HISTORY_URL, payload)
